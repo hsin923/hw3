@@ -1,0 +1,54 @@
+letter_mapping = {chr(97+i): chr(65+i) for i in range(26)}
+
+user_input = input("輸入小寫英文字母：")
+
+uppercase_output = "".join(letter_mapping[char] for char in user_input if char in letter_mapping)
+
+print("轉換後的大寫字母：", uppercase_output)
+
+
+#=================================================================================================================
+
+import random
+
+n = int(input("輸入數量 n: "))
+a = int(input("輸入下限 a: "))
+b = int(input("輸入上限 b: "))
+
+if n > b - a + 1:
+    print("錯誤：n 的值超過了 a 到 b 之間的數字範圍。")
+else:
+    numbers = {random.randint(a, b) for _ in range(n)}
+    numbers_sorted = sorted(numbers, reverse=True) 
+
+    print("隨機抽取並排序後的結果（去除重複）：", numbers_sorted)
+
+
+#==================================================================================================================
+
+import random
+
+suits = ['♠', '♥', '♣', '♦'] 
+ranks = list(range(3, 11)) + ['J', 'Q', 'K', 'A', '2']  
+deck = [f'{suit}{rank}' for suit in suits for rank in ranks]
+
+random.shuffle(deck)
+
+players = [[], [], [], []]
+for i, card in enumerate(deck):
+    players[i % 4].append(card)
+
+def card_value(card):
+    order = list(range(3, 11)) + [11, 12, 13, 1, 2]
+    rank_value = card[1:]
+    if rank_value.isdigit():
+        value = int(rank_value)
+    else:
+        value = {'J': 11, 'Q': 12, 'K': 13, 'A': 1, '2': 2}[rank_value]
+    return order.index(value)
+
+for player in players:
+    player.sort(key=card_value)
+
+for i, player in enumerate(players, start=1):
+    print(f"玩家{i}：{' '.join(player)}")
